@@ -1,11 +1,18 @@
-# This is a basic workflow to help you get started with Actions
-
 name: steps examples
 
-jobx:
-  runs-on: ubuntu-latest
+on:
+  push
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: Example of custom action
     steps:
-      - name: CDK NodeJS
-        uses: udondan/cdk-nodejs@v0.4.0      
-      - name: verification of node version
-        run: node --version
+      - name: Checkout Actions
+        uses: actions/checkout@v2
+      - id: step-caller
+        uses: "./.github/actions/hello"
+        with:
+          the-caller: 'Myself'
+      - run: echo random-number ${{ steps.step-caller.outputs.random-number }}
+        shell: bash
